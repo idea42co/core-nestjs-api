@@ -1,0 +1,3 @@
+replace:
+  strings:
+    project: core-nestjs-api
