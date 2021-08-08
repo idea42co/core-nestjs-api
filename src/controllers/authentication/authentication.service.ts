@@ -25,7 +25,8 @@ export class AuthenticationService {
   async login(userName: string, password: string): Promise<string> {
     const userSearch = await this.userRepo.findOne({
       where: { userName, passwordHash: this.getHash(password) },
-      relations: ['scopes', 'organization']});
+      relations: ["scopes", "organization"],
+    });
     if (userSearch) {
       const scopes = userSearch.scopes.map((t) => {
         const scope: AuthzScopeInterface = {
