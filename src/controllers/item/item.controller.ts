@@ -39,8 +39,6 @@ export class ItemController {
     @Body() itemRequest: ItemRequestDto,
     @Request() request: any,
   ): Promise<RestResponse<any, any>> {
-    console.log(request.organization);
-
     return new RestResponse<any, any>(
       "testing",
       await this.service.createItem(itemRequest.test, request.organization),
