@@ -148,8 +148,8 @@ templates:
 
     configs:
       - strings:
-          env-name: prod
-          env-group: prod
+          env-name: production
+          env-group: production
         vars:
           db_syncronize: false
 
