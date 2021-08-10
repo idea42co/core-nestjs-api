@@ -37,7 +37,7 @@ export class ItemController {
     this.logger.log(`Adding item ${JSON.stringify(request.user)}`);
     return new RestResponse<any, any>(
       request.correlationId,
-      await this.service.createItem(itemRequest.test, request.organization),
+      await this.service.createItem(itemRequest.itemName, request.organization),
     );
   }
 }

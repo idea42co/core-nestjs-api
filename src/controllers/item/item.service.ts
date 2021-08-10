@@ -20,10 +20,10 @@ export class ItemService {
     private readonly itemsRepo: Repository<ItemEntity>,
   ) {}
   async createItem(
-    test: string,
+    itemName: string,
     organization: OrganizationEntity,
   ): Promise<ItemEntity> {
-    const newItem = await this.itemsRepo.save({ test, organization });
+    const newItem = await this.itemsRepo.save({ itemName, organization });
 
     return newItem;
   }

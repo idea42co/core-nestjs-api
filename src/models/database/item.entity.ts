@@ -7,5 +7,5 @@ export class ItemEntity extends BaseEntity {
   id: number;
 
   @Column()
-  test: string;
+  itemName: string;
 }

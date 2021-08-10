@@ -6,11 +6,11 @@ import {
 } from "@nestjs/common";
 import { AppConfig } from "./app.config";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { EntitySchema } from "typeorm";
 import { UserEntity } from "./models/database/user.entity";
 import { ScopeEntity } from "./models/database/scope.entity";
 import { OrganizationEntity } from "./models/database/organization.entity";
 import { ItemEntity } from "./models/database/item.entity";
+import { appDir } from "./root";
 
 const config = new AppConfig();
 
@@ -35,7 +35,9 @@ if (config.database.dbType === "sqlite") {
       type: "sqlite",
       database: config.database.sqlite.name,
       entities,
-      synchronize: true,
+      synchronize: false,
+      migrations: [`${appDir}/dist/migrations/*.js`],
+      migrationsRun: true,
     }),
   );
 } else if (config.database.dbType === "mysql") {
@@ -61,7 +63,9 @@ if (config.database.dbType === "sqlite") {
         ],
       },
       entities,
-      synchronize: true,
+      synchronize: false,
+      migrations: [`${appDir}/dist/migrations/*.js`],
+      migrationsRun: true,
     }),
   );
 }

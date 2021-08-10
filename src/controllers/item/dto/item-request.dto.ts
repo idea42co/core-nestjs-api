@@ -5,5 +5,5 @@ import { ApiProperty } from "@nestjs/swagger";
 export class ItemRequestDto {
   @ApiProperty()
   @Expose()
-  test: string;
+  itemName: string;
 }
