@@ -27,10 +27,9 @@ export class AuthenticationController {
   async doAuth(
     @Body() request: AuthenticationRequestDto,
   ): Promise<RestResponse<any, any>> {
-    return new RestResponse<any, any>(
-      "testing",
-      {token: await this.service.login(request.userName, request.password) }
-    );
+    return new RestResponse<any, any>("testing", {
+      token: await this.service.login(request.userName, request.password),
+    });
   }
 
   @Post("/register")
