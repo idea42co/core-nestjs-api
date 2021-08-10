@@ -66,4 +66,4 @@ if (config.database.dbType === "sqlite") {
   );
 }
 
-export { AppImports };
+export { AppImports, entities };

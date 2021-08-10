@@ -11,12 +11,13 @@ import jwtDecode from "jwt-decode";
 import { InjectRepository } from "@nestjs/typeorm";
 import { OrganizationEntity } from "../models/database/organization.entity";
 import { Repository } from "typeorm";
+import { UserEntity } from "../models/database/user.entity";
 
 @Injectable()
-export class OrganizationInterceptor implements NestInterceptor {
+export class UserInterceptor implements NestInterceptor {
   constructor(
-    @InjectRepository(OrganizationEntity)
-    private readonly organizationRepo: Repository<OrganizationEntity>,
+    @InjectRepository(UserEntity)
+    private readonly usersRepo: Repository<UserEntity>,
   ) {}
 
   async intercept(
@@ -41,18 +42,18 @@ export class OrganizationInterceptor implements NestInterceptor {
     const decodedToken = jwtDecode<any>(jwtToken);
 
     // Get the organizationId
-    const organizationId = decodedToken.organizationId;
+    const userId = decodedToken.sub;
 
     // Get the organization from the DB
-    const organization = await this.organizationRepo.findOne({
-      where: { id: organizationId },
+    const user = await this.usersRepo.findOne({
+      where: { id: userId },
     });
 
-    if (!organization) {
-      throw new HttpException("Organization not found", HttpStatus.FORBIDDEN);
+    if (!user) {
+      throw new HttpException("User not found", HttpStatus.UNAUTHORIZED);
     }
 
-    request.organization = organization;
+    request.user = user;
 
     return next.handle();
   }

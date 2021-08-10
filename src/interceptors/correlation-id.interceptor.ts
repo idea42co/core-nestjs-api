@@ -13,7 +13,7 @@ import { OrganizationEntity } from "../models/database/organization.entity";
 import { Repository } from "typeorm";
 
 @Injectable()
-export class OrganizationInterceptor implements NestInterceptor {
+export class CorrelationIdInterceptor implements NestInterceptor {
   constructor(
     @InjectRepository(OrganizationEntity)
     private readonly organizationRepo: Repository<OrganizationEntity>,
@@ -25,34 +25,16 @@ export class OrganizationInterceptor implements NestInterceptor {
   ): Promise<Observable<any>> {
     // Get the request
     const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers.authorization;
+    const correlationId = request.headers["x-correlation-id"];
 
-    if (!authHeader) {
+    if (!correlationId) {
       throw new HttpException(
-        "No authorization header specified",
-        HttpStatus.UNAUTHORIZED,
+        "X-Correlation-Id is required in the header",
+        HttpStatus.BAD_REQUEST,
       );
     }
 
-    // Get the token
-    const jwtToken = authHeader.replace("Bearer", "");
-
-    // Decode the token
-    const decodedToken = jwtDecode<any>(jwtToken);
-
-    // Get the organizationId
-    const organizationId = decodedToken.organizationId;
-
-    // Get the organization from the DB
-    const organization = await this.organizationRepo.findOne({
-      where: { id: organizationId },
-    });
-
-    if (!organization) {
-      throw new HttpException("Organization not found", HttpStatus.FORBIDDEN);
-    }
-
-    request.organization = organization;
+    request.correlationId = correlationId;
 
     return next.handle();
   }

@@ -20,27 +20,23 @@ import { ScopeEntity } from "../../models/database/scope.entity";
 import { OrganizationEntity } from "../../models/database/organization.entity";
 import { RestResponse } from "../../models/responses/rest.response";
 import { OrganizationInterceptor } from "../../interceptors/organization.interceptor";
+import { UserInterceptor } from "../../interceptors/user.interceptor";
+import { RestApiDecorator } from "../../decorators/rest-api.decorator";
 
-@Controller("item")
-@ApiTags("Item")
-@ApiBearerAuth()
-@UseInterceptors(OrganizationInterceptor)
+@RestApiDecorator("item", true, "Items")
 export class ItemController {
   private readonly logger = new Logger(ItemController.name);
 
-  constructor(
-    private readonly service: ItemService,
-    private readonly config: AppConfig,
-  ) {}
+  constructor(private readonly service: ItemService) {}
 
   @Post()
-  @HttpCode(200)
   async addItem(
     @Body() itemRequest: ItemRequestDto,
     @Request() request: any,
   ): Promise<RestResponse<any, any>> {
+    this.logger.log(`Adding item ${JSON.stringify(request.user)}`);
     return new RestResponse<any, any>(
-      "testing",
+      request.correlationId,
       await this.service.createItem(itemRequest.test, request.organization),
     );
   }

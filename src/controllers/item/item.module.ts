@@ -9,7 +9,9 @@ import { ScopeEntity } from "../../models/database/scope.entity";
 import { ItemEntity } from "../../models/database/item.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ItemEntity, OrganizationEntity])],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity, ItemEntity, OrganizationEntity]),
+  ],
   exports: [TypeOrmModule],
   controllers: [ItemController],
   providers: [...AppProviders, ItemService],

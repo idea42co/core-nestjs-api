@@ -11,9 +11,9 @@ import { Repository } from "typeorm";
 import { ScopeEntity } from "../../models/database/scope.entity";
 import { OrganizationEntity } from "../../models/database/organization.entity";
 import { RestResponse } from "../../models/responses/rest.response";
+import { RestApiDecorator } from "../../decorators/rest-api.decorator";
 
-@Controller("authentication")
-@ApiTags("Authentication")
+@RestApiDecorator("authentication", false, "Auth")
 export class AuthenticationController {
   private readonly logger = new Logger(AuthenticationController.name);
 
