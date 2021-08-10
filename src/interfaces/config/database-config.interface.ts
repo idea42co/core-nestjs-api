@@ -1,5 +1,6 @@
 export interface DatabaseConfigInterface {
   dbType: string;
+  syncronize: boolean;
   sqlite: {
     name: string;
   };

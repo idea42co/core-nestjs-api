@@ -13,6 +13,10 @@ export class AppConfig {
   get database(): DatabaseConfigInterface {
     return {
       dbType: process.env.DB_TYPE,
+      syncronize: process.env.DB_SYNCRONIZE
+        ? process.env.DB_SYNCRONIZE === "true"
+        : true,
+
       mySql: {
         host: process.env.MYSQL_DB_HOST,
         port: parseInt(process.env.MYSQL_DB_PORT || "3306", 10),

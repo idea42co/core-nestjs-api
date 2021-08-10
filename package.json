@@ -1,8 +1,8 @@
 {
   "name": "core-nestjs-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Core NestJS API",
+  "author": "ryan@idea42.co",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

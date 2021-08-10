@@ -1,3 +1,157 @@
 replace:
   strings:
-    project: core-nestjs-api
+    project_name: core-nestjs-api
+    description: Core NestJS API
+    company: Idea42
+    author: Ryan Ward <ryan@idea42.co>
+    sqlite_db_name: test_db.sqlite
+    mysql_db_host: localhost
+    mysql_db_port: 3306
+    mysql_db_name: test_db
+    mysql_db_username: root
+    mysql_db_password: root_pass
+
+  files:
+    - src/decorators/rest-api.decorator.ts
+    - src/enums/authz/authz-action.enum.ts
+    - src/enums/authz/authz-scope.enum.ts
+    - src/interceptors/correlation-id.interceptor.ts
+    - src/interceptors/organization.interceptor.ts
+    - src/interceptors/user.interceptor.ts
+    - src/interfaces/authz/authz-scope.interface.ts
+    - src/models/responses/rest.response.ts
+    - src/root.ts
+    - .prettierrc
+    - .eslintrc.js
+    - tsconfig.build.json
+    - tsconfig.json
+
+create:
+  files:
+    - src/controllers/authentication/dto/authentication-request.dto.ts
+    - src/controllers/authentication/authentication.controller.spec.ts
+    - src/controllers/authentication/authentication.controller.ts
+    - src/controllers/authentication/authentication.module.ts
+    - src/controllers/authentication/authentication.service.spec.ts
+    - src/controllers/authentication/authentication.service.ts
+    - src/interfaces/config/database-config.interface.ts
+    - src/interfaces/config/jwt-config.interface.ts
+    - src/migrations/.gitkeep
+    - src/models/database/base.entity.ts
+    - src/models/database/organization.entity.ts
+    - src/models/database/scope.entity.ts
+    - src/models/database/user.entity.ts
+    - src/app.config.ts
+    - src/app.imports.ts
+    - src/app.module.ts
+    - src/app.providers.ts
+    - src/main.ts
+    - src/ormconfig.ts
+    - test/app.e2e-spec.ts
+    - test/jest-e2e.json
+    - .gitignore
+    - nest-cli.json
+    - README.md
+
+move:
+  directories: []
+  files: []
+
+run:
+  - command: yarn
+    when: always
+  - command: yarn build
+    when: always
+
+merge:
+  - type: jq
+    path: package.json
+    create:
+      - ".name"
+      - ".version"
+      - ".description"
+      - ".author"
+      - ".license"
+    replace:
+      - ".scripts.prebuild"
+      - ".scripts.build"
+      - ".scripts.format"
+      - ".scripts.start"
+      - ".scripts[\"start:dev\"]"
+      - ".scripts[\"start:debug\"]"
+      - ".scripts[\"start:prod\"]"
+      - ".scripts.lint"
+      - ".scripts.test"
+      - ".scripts[\"test:watch\"]"
+      - ".scripts[\"test:cov\"]"
+      - ".scripts[\"test:debug\"]"
+      - ".scripts[\"test:e2e\"]"
+      - ".scripts.typeorm"
+      - ".scripts[\"migration:generate\"]"
+      - ".scripts[\"migration:run\"]"
+      - ".dependencies[\"@nestjs/common\"]"
+      - ".dependencies[\"@nestjs/config\"]"
+      - ".dependencies[\"@nestjs/core\"]"
+      - ".dependencies[\"@nestjs/platform-express\"]"
+      - ".dependencies[\"@nestjs/swagger\"]"
+      - ".dependencies[\"@nestjs/typeorm\"]"
+      - ".dependencies[\"@types/jsonwebtoken\"]"
+      - ".dependencies[\"class-transformer\"]"
+      - ".dependencies[\"joi\"]"
+      - ".dependencies[\"jsonwebtoken\"]"
+      - ".dependencies[\"jwt-decode\"]"
+      - ".dependencies[\"mysql2\"]"
+      - ".dependencies[\"reflect-metadata\"]"
+      - ".dependencies[\"rimraf\"]"
+      - ".dependencies[\"rxjs\"]"
+      - ".dependencies[\"sqlite3\"]"
+      - ".dependencies[\"swagger-ui-express\"]"
+      - ".dependencies[\"typeorm\"]"
+      - ".devDependencies[\"@nestjs/cli\"]"
+      - ".devDependencies[\"@nestjs/schematics\"]"
+      - ".devDependencies[\"@nestjs/testing\"]"
+      - ".devDependencies[\"@types/express\"]"
+      - ".devDependencies[\"@types/jest\"]"
+      - ".devDependencies[\"@types/node\"]"
+      - ".devDependencies[\"@types/supertest\"]"
+      - ".devDependencies[\"@typescript-eslint/eslint-plugin\"]"
+      - ".devDependencies[\"@typescript-eslint/parser\"]"
+      - ".devDependencies[\"eslint\"]"
+      - ".devDependencies[\"eslint-config-prettier\"]"
+      - ".devDependencies[\"eslint-plugin-prettier\"]"
+      - ".devDependencies[\"jest\"]"
+      - ".devDependencies[\"npm-run-all\"]"
+      - ".devDependencies[\"prettier\"]"
+      - ".devDependencies[\"supertest\"]"
+      - ".devDependencies[\"ts-jest\"]"
+      - ".devDependencies[\"ts-loader\"]"
+      - ".devDependencies[\"ts-node\"]"
+      - ".devDependencies[\"tsconfig-paths\"]"
+      - ".devDependencies[\"typescript\"]"
+
+templates:
+  - name: environment
+    replace:
+      strings:
+        env-name: localhost
+        env-group: localhost
+      vars:
+        db_syncronize: true
+
+    merge:
+      - type: env
+        path: src/env/localhost.env
+        set:
+          "*": "*"
+          JWT_SECRET: $uuidv4()
+          DB_SYNCRONIZE: $db_syncronize
+
+    configs:
+      - strings:
+          env-name: prod
+          env-group: prod
+        vars:
+          db_syncronize: false
+
+
+

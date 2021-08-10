@@ -9,7 +9,6 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserEntity } from "./models/database/user.entity";
 import { ScopeEntity } from "./models/database/scope.entity";
 import { OrganizationEntity } from "./models/database/organization.entity";
-import { ItemEntity } from "./models/database/item.entity";
 import { appDir } from "./root";
 
 const config = new AppConfig();
@@ -26,7 +25,6 @@ const entities: Array<any> = [
   UserEntity,
   ScopeEntity,
   OrganizationEntity,
-  ItemEntity,
 ];
 
 if (config.database.dbType === "sqlite") {
@@ -35,7 +33,7 @@ if (config.database.dbType === "sqlite") {
       type: "sqlite",
       database: config.database.sqlite.name,
       entities,
-      synchronize: false,
+      synchronize: config.database.syncronize,
       migrations: [`${appDir}/dist/migrations/*.js`],
       migrationsRun: true,
     }),
@@ -63,7 +61,7 @@ if (config.database.dbType === "sqlite") {
         ],
       },
       entities,
-      synchronize: false,
+      synchronize: config.database.syncronize,
       migrations: [`${appDir}/dist/migrations/*.js`],
       migrationsRun: true,
     }),
