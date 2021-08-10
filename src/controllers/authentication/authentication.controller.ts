@@ -10,6 +10,7 @@ import { UserEntity } from "../../models/database/user.entity";
 import { Repository } from "typeorm";
 import { ScopeEntity } from "../../models/database/scope.entity";
 import { OrganizationEntity } from "../../models/database/organization.entity";
+import { RestResponse } from "../../models/responses/rest.response";
 
 @Controller("authentication")
 @ApiTags("authentication")
@@ -23,8 +24,13 @@ export class AuthenticationController {
 
   @Post()
   @HttpCode(200)
-  async doAuth(@Body() request: AuthenticationRequestDto): Promise<any> {
-    return this.service.login(request.userName, request.password);
+  async doAuth(
+    @Body() request: AuthenticationRequestDto,
+  ): Promise<RestResponse<any, any>> {
+    return new RestResponse<any, any>(
+      "testing",
+      {token: await this.service.login(request.userName, request.password) }
+    );
   }
 
   @Post("/register")
