@@ -39,6 +39,7 @@ export class AuthenticationService {
       return jwt.sign(
         {
           sub: userSearch.id,
+          organizationId: userSearch.organization.id,
           scopes: this.convertScopeItems(userSearch.organization.id, scopes),
         },
         this.config.jwt.secret,

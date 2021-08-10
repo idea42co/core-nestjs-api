@@ -7,6 +7,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle("Core NestJS API")
+    .addBearerAuth()
     .setDescription("Core NestJS API built by Idea42")
     .setVersion("1.0")
     .build();

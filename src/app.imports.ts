@@ -10,6 +10,7 @@ import { EntitySchema } from "typeorm";
 import { UserEntity } from "./models/database/user.entity";
 import { ScopeEntity } from "./models/database/scope.entity";
 import { OrganizationEntity } from "./models/database/organization.entity";
+import { ItemEntity } from "./models/database/item.entity";
 
 const config = new AppConfig();
 
@@ -21,7 +22,12 @@ const AppImports: (
 )[] = [];
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const entities: Array<any> = [UserEntity, ScopeEntity, OrganizationEntity];
+const entities: Array<any> = [
+  UserEntity,
+  ScopeEntity,
+  OrganizationEntity,
+  ItemEntity,
+];
 
 if (config.database.dbType === "sqlite") {
   AppImports.push(

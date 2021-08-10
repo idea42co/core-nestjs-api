@@ -13,7 +13,7 @@ import { OrganizationEntity } from "../../models/database/organization.entity";
 import { RestResponse } from "../../models/responses/rest.response";
 
 @Controller("authentication")
-@ApiTags("authentication")
+@ApiTags("Authentication")
 export class AuthenticationController {
   private readonly logger = new Logger(AuthenticationController.name);
 
