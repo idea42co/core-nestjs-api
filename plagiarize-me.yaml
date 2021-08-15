@@ -4,12 +4,8 @@ replace:
     description: Core NestJS API
     company: Idea42
     author: Ryan Ward <ryan@idea42.co>
-    sqlite_db_name: test_db.sqlite
-    mysql_db_host: localhost
-    mysql_db_port: 3306
-    mysql_db_name: test_db
-    mysql_db_username: root
-    mysql_db_password: root_pass
+  vars:
+    db-type: sqlite
 
   files:
     - src/decorators/rest-api.decorator.ts
@@ -100,7 +96,7 @@ merge:
       - ".dependencies[\"joi\"]"
       - ".dependencies[\"jsonwebtoken\"]"
       - ".dependencies[\"jwt-decode\"]"
-      - ".dependencies[\"mysql2\"]"
+      - ".dependencies[\"mysql\"]"
       - ".dependencies[\"reflect-metadata\"]"
       - ".dependencies[\"rimraf\"]"
       - ".dependencies[\"rxjs\"]"
@@ -144,7 +140,16 @@ templates:
         set:
           "*": "*"
           JWT_SECRET: $uuidv4()
+          DB_TYPE: $db-type
           DB_SYNCRONIZE: $db_syncronize
+          SQLITE_DB_NAME: core-nestjs-api.localhost.sqlite
+          MYSQL_DB_NAME:  core-nestjs-api
+        create:
+          - JWT_SECRET
+          - MYSQL_DB_HOST
+          - MYSQL_DB_PORT
+          - MYSQL_DB_USERNAME
+          - MYSQL_DB_PASSWORD
 
     configs:
       - strings:
