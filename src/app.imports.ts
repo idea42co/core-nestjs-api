@@ -21,11 +21,7 @@ const AppImports: (
 )[] = [];
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const entities: Array<any> = [
-  UserEntity,
-  ScopeEntity,
-  OrganizationEntity,
-];
+const entities: Array<any> = [UserEntity, ScopeEntity, OrganizationEntity];
 
 if (config.database.dbType === "sqlite") {
   AppImports.push(

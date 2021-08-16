@@ -12,12 +12,15 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { OrganizationEntity } from "../models/database/organization.entity";
 import { Repository } from "typeorm";
 import { UserEntity } from "../models/database/user.entity";
+import * as jwt from "jsonwebtoken";
+import { AppConfig } from "../app.config";
 
 @Injectable()
 export class UserInterceptor implements NestInterceptor {
   constructor(
     @InjectRepository(UserEntity)
     private readonly usersRepo: Repository<UserEntity>,
+    private readonly config: AppConfig,
   ) {}
 
   async intercept(
@@ -36,10 +39,18 @@ export class UserInterceptor implements NestInterceptor {
     }
 
     // Get the token
-    const jwtToken = authHeader.replace("Bearer", "");
-
-    // Decode the token
-    const decodedToken = jwtDecode<any>(jwtToken);
+    const jwtToken = authHeader.replace("Bearer ", "");
+    let decodedToken: string;
+    // Verify and Decode the token
+    try {
+      jwt.verify(jwtToken, this.config.jwt.secret);
+      decodedToken = jwtDecode(jwtToken);
+    } catch (error) {
+      throw new HttpException(
+        `Token is not valid: ${error.message}`,
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
 
     // Get the organizationId
     const userId = decodedToken.sub;

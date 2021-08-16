@@ -43,7 +43,9 @@ export class AuthenticationService {
           scopes: this.convertScopeItems(userSearch.organization.id, scopes),
         },
         this.config.jwt.secret,
-        { expiresIn: this.config.jwt.expiresInSeconds },
+        {
+          expiresIn: this.config.jwt.expiresInSeconds,
+        },
       );
     }
   }
