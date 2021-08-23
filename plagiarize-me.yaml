@@ -3,7 +3,7 @@ replace:
     project_name: core-nestjs-api
     description: Core NestJS API
     company: Idea42
-    author: Ryan Ward <ryan@idea42.co>
+    author: ryan@idea42.co
   vars:
     db-type: sqlite
 
@@ -150,8 +150,11 @@ templates:
           DB_SYNCRONIZE: $db_syncronize
           SQLITE_DB_NAME: core-nestjs-api.localhost.sqlite
           MYSQL_DB_NAME:  core-nestjs-api
+          MSSQL_DB_NAME:  core-nestjs-api
     create:
       - JWT_SECRET
+      - DB_SYNCRONIZE
+      - DB_TYPE
       - MYSQL_DB_HOST
       - MYSQL_DB_PORT
       - MYSQL_DB_USERNAME
