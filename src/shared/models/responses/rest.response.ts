@@ -1,4 +1,4 @@
-export class RestResponse<M, R> {
+export class RestResponse<M = any, R = any> {
   private _meta: M;
   private _response: R;
   private _correlationId: string;

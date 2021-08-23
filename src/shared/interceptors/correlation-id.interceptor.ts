@@ -9,16 +9,10 @@ import {
 import { Observable } from "rxjs";
 import jwtDecode from "jwt-decode";
 import { InjectRepository } from "@nestjs/typeorm";
-import { OrganizationEntity } from "../models/database/organization.entity";
 import { Repository } from "typeorm";
 
 @Injectable()
 export class CorrelationIdInterceptor implements NestInterceptor {
-  constructor(
-    @InjectRepository(OrganizationEntity)
-    private readonly organizationRepo: Repository<OrganizationEntity>,
-  ) {}
-
   async intercept(
     context: ExecutionContext,
     next: CallHandler<any>,

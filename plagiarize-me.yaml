@@ -8,46 +8,51 @@ replace:
     db-type: sqlite
 
   files:
-    - src/decorators/rest-api.decorator.ts
-    - src/enums/authz/authz-action.enum.ts
-    - src/enums/authz/authz-scope.enum.ts
-    - src/interceptors/correlation-id.interceptor.ts
-    - src/interceptors/organization.interceptor.ts
-    - src/interceptors/user.interceptor.ts
-    - src/interfaces/authz/authz-scope.interface.ts
-    - src/models/responses/rest.response.ts
+    - src/shared/decorators/protected-method.decorator.ts
+    - src/shared/decorators/rest-api.decorator.ts
+    - src/shared/enums/authz/authz-action.enum.ts
+    - src/shared/enums/authz/authz-scope.enum.ts
+    - src/shared/interceptors/correlation-id.interceptor.ts
+    - src/shared/interceptors/user.interceptor.ts
+    - src/shared/interfaces/authz/authz-scope.interface.ts
+    - src/shared/models/responses/rest.response.ts
+    - src/shared/utilities/crypto.util.ts
+    - src/shared/utilities/scope.util.ts
+    - src/main.ts
+    - src/ormconfig.ts
     - src/root.ts
-    - .prettierrc
+    - test/app.e2e-spec.ts
+    - test/jest-e2e.json
     - .eslintrc.js
+    - .gitignore
+    - .prettierrc
+    - nest-cli.json
+    - README.md
     - tsconfig.build.json
     - tsconfig.json
+    - yarn.lock
 
 create:
   files:
-    - src/controllers/authentication/dto/authentication-request.dto.ts
-    - src/controllers/authentication/authentication.controller.spec.ts
     - src/controllers/authentication/authentication.controller.ts
     - src/controllers/authentication/authentication.module.ts
-    - src/controllers/authentication/authentication.service.spec.ts
     - src/controllers/authentication/authentication.service.ts
-    - src/interfaces/config/database-config.interface.ts
-    - src/interfaces/config/jwt-config.interface.ts
+    - src/controllers/authentication/authentication-request.dto.ts
+    - src/controllers/user/user.controller.ts
+    - src/controllers/user/user.module.ts
+    - src/controllers/user/user.service.ts
+    - src/controllers/user/user-register-request.dto.ts
     - src/migrations/.gitkeep
-    - src/models/database/base.entity.ts
-    - src/models/database/organization.entity.ts
-    - src/models/database/scope.entity.ts
-    - src/models/database/user.entity.ts
-    - src/app.config.ts
-    - src/app.imports.ts
+    - src/shared/interfaces/config/database-config.interface.ts
+    - src/shared/interfaces/config/jwt-config.interface.ts
+    - src/shared/models/database/base.entity.ts
+    - src/shared/models/database/scope.entity.ts
+    - src/shared/models/database/user.entity.ts
+    - src/shared/app.config.ts
+    - src/shared/app.imports.ts
+    - src/shared/app.providers.ts
     - src/app.module.ts
-    - src/app.providers.ts
-    - src/main.ts
-    - src/ormconfig.ts
-    - test/app.e2e-spec.ts
-    - test/jest-e2e.json
-    - .gitignore
-    - nest-cli.json
-    - README.md
+    - package.json
 
 move:
   directories: []
@@ -77,11 +82,11 @@ merge:
       - ".scripts[\"start:debug\"]"
       - ".scripts[\"start:prod\"]"
       - ".scripts.lint"
-      - ".scripts.test"
-      - ".scripts[\"test:watch\"]"
-      - ".scripts[\"test:cov\"]"
-      - ".scripts[\"test:debug\"]"
-      - ".scripts[\"test:e2e\"]"
+      - ".scripts.user"
+      - ".scripts[\"user:watch\"]"
+      - ".scripts[\"user:cov\"]"
+      - ".scripts[\"user:debug\"]"
+      - ".scripts[\"user:e2e\"]"
       - ".scripts.typeorm"
       - ".scripts[\"migration:generate\"]"
       - ".scripts[\"migration:run\"]"
@@ -96,6 +101,7 @@ merge:
       - ".dependencies[\"joi\"]"
       - ".dependencies[\"jsonwebtoken\"]"
       - ".dependencies[\"jwt-decode\"]"
+      - ".dependencies[\"mssql\"]"
       - ".dependencies[\"mysql\"]"
       - ".dependencies[\"reflect-metadata\"]"
       - ".dependencies[\"rimraf\"]"
@@ -144,12 +150,19 @@ templates:
           DB_SYNCRONIZE: $db_syncronize
           SQLITE_DB_NAME: core-nestjs-api.localhost.sqlite
           MYSQL_DB_NAME:  core-nestjs-api
-        create:
-          - JWT_SECRET
-          - MYSQL_DB_HOST
-          - MYSQL_DB_PORT
-          - MYSQL_DB_USERNAME
-          - MYSQL_DB_PASSWORD
+    create:
+      - JWT_SECRET
+      - MYSQL_DB_HOST
+      - MYSQL_DB_PORT
+      - MYSQL_DB_USERNAME
+      - MYSQL_DB_PASSWORD
+      - MYSQL_RO_DB_HOST
+      - MYSQL_RO_DB_PORT
+      - MSSQL_DB_HOST
+      - MSSQL_DB_PORT
+      - MSSQL_DB_NAME
+      - MSSQL_DB_USERNAME
+      - MSSQL_DB_PASSWORD
 
     configs:
       - strings:
@@ -158,5 +171,10 @@ templates:
         vars:
           db_syncronize: false
 
+      - strings:
+          env-name: development
+          env-group: development
+          vars:
+            db_syncronize: false
 
 

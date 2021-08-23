@@ -8,8 +8,7 @@ import { AppConfig } from "./app.config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserEntity } from "./models/database/user.entity";
 import { ScopeEntity } from "./models/database/scope.entity";
-import { OrganizationEntity } from "./models/database/organization.entity";
-import { appDir } from "./root";
+import { appDir } from "../root";
 
 const config = new AppConfig();
 
@@ -21,7 +20,7 @@ const AppImports: (
 )[] = [];
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const entities: Array<any> = [UserEntity, ScopeEntity, OrganizationEntity];
+const entities: Array<any> = [UserEntity, ScopeEntity];
 
 if (config.database.dbType === "sqlite") {
   AppImports.push(
@@ -56,6 +55,21 @@ if (config.database.dbType === "sqlite") {
           },
         ],
       },
+      entities,
+      synchronize: config.database.syncronize,
+      migrations: [`${appDir}/dist/migrations/*.js`],
+      migrationsRun: true,
+    }),
+  );
+} else if (config.database.dbType === "mssql") {
+  AppImports.push(
+    TypeOrmModule.forRoot({
+      type: "mssql",
+      database: config.database.msSql.database,
+      password: config.database.msSql.password,
+      username: config.database.msSql.userName,
+      host: config.database.msSql.host,
+      port: config.database.msSql.port,
       entities,
       synchronize: config.database.syncronize,
       migrations: [`${appDir}/dist/migrations/*.js`],

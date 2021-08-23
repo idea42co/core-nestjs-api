@@ -9,15 +9,14 @@ import {
 import { Observable } from "rxjs";
 import jwtDecode from "jwt-decode";
 import { InjectRepository } from "@nestjs/typeorm";
-import { OrganizationEntity } from "../models/database/organization.entity";
 import { Repository } from "typeorm";
+import { UserEntity } from "../models/database/user.entity";
+import * as jwt from "jsonwebtoken";
+import { AppConfig } from "../app.config";
 
 @Injectable()
-export class OrganizationInterceptor implements NestInterceptor {
-  constructor(
-    @InjectRepository(OrganizationEntity)
-    private readonly organizationRepo: Repository<OrganizationEntity>,
-  ) {}
+export class UserInterceptor implements NestInterceptor {
+  constructor(private readonly config: AppConfig) {}
 
   async intercept(
     context: ExecutionContext,
@@ -35,24 +34,23 @@ export class OrganizationInterceptor implements NestInterceptor {
     }
 
     // Get the token
-    const jwtToken = authHeader.replace("Bearer", "");
-
-    // Decode the token
-    const decodedToken = jwtDecode<any>(jwtToken);
-
-    // Get the organizationId
-    const organizationId = decodedToken.organizationId;
-
-    // Get the organization from the DB
-    const organization = await this.organizationRepo.findOne({
-      where: { id: organizationId },
-    });
-
-    if (!organization) {
-      throw new HttpException("Organization not found", HttpStatus.FORBIDDEN);
+    const jwtToken = authHeader.replace("Bearer ", "");
+    let decodedToken: string;
+    // Verify and Decode the token
+    try {
+      jwt.verify(jwtToken, this.config.jwt.secret);
+      decodedToken = jwtDecode(jwtToken);
+    } catch (error) {
+      throw new HttpException(
+        `Token is not valid: ${error.message}`,
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
-    request.organization = organization;
+    // Get the organizationId
+    const userId = decodedToken.sub;
+
+    request.user = { userId };
 
     return next.handle();
   }

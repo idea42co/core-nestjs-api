@@ -1,8 +1,10 @@
 import { DatabaseConfigInterface } from "./interfaces/config/database-config.interface";
 import { JwtConfigInterface } from "./interfaces/config/jwt-config.interface";
 import * as dotenv from "dotenv";
-import { appDir } from "./root";
+import { appDir } from "../root";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class AppConfig {
   constructor() {
     dotenv.config({
@@ -28,6 +30,15 @@ export class AppConfig {
           port: parseInt(process.env.MYSQL_RO_DB_PORT || "3306", 10),
         },
       },
+
+      msSql: {
+        host: process.env.MSSQL_DB_HOST,
+        port: parseInt(process.env.MSSQL_DB_PORT || "1433", 10),
+        database: process.env.MSSQL_DB_NAME,
+        userName: process.env.MSSQL_DB_USERNAME,
+        password: process.env.MSSQL_DB_PASSWORD,
+      },
+
       sqlite: {
         name: process.env.SQLITE_DB_NAME,
       },

@@ -1,5 +1,5 @@
-import { AppConfig } from "./app.config";
-import { entities } from "./app.imports";
+import { AppConfig } from "./shared/app.config";
+import { entities } from "./shared/app.imports";
 
 const config = new AppConfig();
 

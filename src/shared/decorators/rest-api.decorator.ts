@@ -2,10 +2,9 @@ import { ApiBearerAuth, ApiHeader, ApiTags } from "@nestjs/swagger";
 import { applyDecorators, Controller, UseInterceptors } from "@nestjs/common";
 import { v4 as uuidV4 } from "uuid";
 import { CorrelationIdInterceptor } from "../interceptors/correlation-id.interceptor";
-import { OrganizationInterceptor } from "../interceptors/organization.interceptor";
 import { UserInterceptor } from "../interceptors/user.interceptor";
 
-export function RestApiDecorator(
+export function RestApi(
   controllerName: string,
   isProtected: boolean = false,
   tagName: string = "default",
@@ -25,7 +24,6 @@ export function RestApiDecorator(
   ];
 
   if (isProtected) {
-    decorators.push(UseInterceptors(OrganizationInterceptor));
     decorators.push(UseInterceptors(UserInterceptor));
     decorators.push(ApiBearerAuth());
   }

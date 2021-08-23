@@ -15,4 +15,11 @@ export interface DatabaseConfigInterface {
       port: number;
     };
   };
+  msSql: {
+    database: string;
+    password: string;
+    userName: string;
+    host: string;
+    port: number;
+  };
 }
