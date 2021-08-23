@@ -1,9 +1,10 @@
 replace:
   strings:
+    author: ryan@idea42.co
+    company: Idea42
     project_name: core-nestjs-api
     description: Core NestJS API
-    company: Idea42
-    author: ryan@idea42.co
+
   vars:
     db-type: sqlite
 
@@ -68,12 +69,12 @@ merge:
   - type: jq
     path: package.json
     create:
-      - ".name"
       - ".version"
-      - ".description"
-      - ".author"
       - ".license"
     replace:
+      - ".name"
+      - ".description"
+      - ".author"
       - ".scripts.prebuild"
       - ".scripts.build"
       - ".scripts.format"
