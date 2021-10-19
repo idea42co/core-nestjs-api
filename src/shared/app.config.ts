@@ -8,7 +8,7 @@ import { Injectable } from "@nestjs/common";
 export class AppConfig {
   constructor() {
     dotenv.config({
-      path: `${appDir}/src/env/${process.env.NODE_ENV || "localhost"}.env`,
+      path: `${appDir}/env/${process.env.NODE_ENV || "localhost"}.env`,
     });
   }
 
